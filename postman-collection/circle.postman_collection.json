@@ -1,0 +1,459 @@
+{
+  "info": {
+    "_postman_id": "64d3bfe6-d439-4028-9422-58d2eba79d19",
+    "name": "circle",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "30562738"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "gaurav+2@coindelta.io",
+                  "type": "text"
+                },
+                {
+                  "key": "firstName",
+                  "value": "gaurav",
+                  "type": "text"
+                },
+                {
+                  "key": "lastName",
+                  "value": "coindelta",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "Test@123",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}{{version}}/auth/register",
+              "host": ["{{url}}{{version}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "// // Extract the token from the response\r",
+                  "const accessToken = res.data.token.AccessToken;\r",
+                  "const refreshToken = res.data.token.RefreshToken;\r",
+                  "\r",
+                  "// // Set the token as an environment variable\r",
+                  "pm.environment.set(\"accessToken\", accessToken);\r",
+                  "pm.environment.set(\"refreshToken\", refreshToken);\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "gaurav+2@coindelta.io",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "Test@123",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}{{version}}/auth/login",
+              "host": ["{{url}}{{version}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "verify email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "gaurav+2@coindelta.io",
+                  "type": "text"
+                },
+                {
+                  "key": "otp",
+                  "value": "628503",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}{{version}}/auth/verify-email",
+              "host": ["{{url}}{{version}}"],
+              "path": ["auth", "verify-email"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "resend email verification",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "gaurav+2@coindelta.io",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}{{version}}/auth/resend-email-verification",
+              "host": ["{{url}}{{version}}"],
+              "path": ["auth", "resend-email-verification"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "forgot password request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "gaurav+2@coindelta.io",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}{{version}}/auth/forgot-password-request",
+              "host": ["{{url}}{{version}}"],
+              "path": ["auth", "forgot-password-request"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "forgot password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "gaurav+2@coindelta.io",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "Allinone@12345",
+                  "type": "text"
+                },
+                {
+                  "key": "otp",
+                  "value": "935336",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}{{version}}/auth/forgot-password",
+              "host": ["{{url}}{{version}}"],
+              "path": ["auth", "forgot-password"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "change password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "currentPassword",
+                  "value": "Allinone@12345",
+                  "type": "text"
+                },
+                {
+                  "key": "newPassword",
+                  "value": "Test@123",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}{{version}}/auth/change-password",
+              "host": ["{{url}}{{version}}"],
+              "path": ["auth", "change-password"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "refresh AccessToken",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "// // Extract the token from the response\r",
+                  "const accessToken = res.data.AccessToken;\r",
+                  "\r",
+                  "// // Set the token as an environment variable\r",
+                  "pm.environment.set(\"accessToken\", accessToken);\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "refreshToken",
+                  "value": "{{refreshToken}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}{{version}}/auth/refresh-token",
+              "host": ["{{url}}{{version}}"],
+              "path": ["auth", "refresh-token"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "get All Users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{url}}{{version}}/users/all",
+          "host": ["{{url}}{{version}}"],
+          "path": ["users", "all"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get User",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{url}}{{version}}/users",
+          "host": ["{{url}}{{version}}"],
+          "path": ["users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get User by Id",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{url}}{{version}}/users/:userId",
+          "host": ["{{url}}{{version}}"],
+          "path": ["users", ":userId"],
+          "variable": [
+            {
+              "key": "userId",
+              "value": "66fa960fd76e9b8f799c3a29"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "verify User",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "isVerified",
+              "value": "true",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{url}}{{version}}/users/:userId",
+          "host": ["{{url}}{{version}}"],
+          "path": ["users", ":userId"],
+          "variable": [
+            {
+              "key": "userId",
+              "value": "66fa960fd76e9b8f799c3a29"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update user",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "files[identification]",
+              "type": "file",
+              "src": "/C:/Users/HP/Downloads/1726049798797_10172604979874021348 (2).png"
+            },
+            {
+              "key": "files[businessLicense]",
+              "type": "file",
+              "src": "/C:/Users/HP/Downloads/1726055715911_1726049798797_101726049798740213482.png"
+            },
+            {
+              "key": "businessName",
+              "value": "Alpha",
+              "type": "text"
+            },
+            {
+              "key": "walletAddress",
+              "value": "0xe0E1D8e06aC676a5382a2Ef08593f9fDA2db1445",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{url}}{{version}}/users",
+          "host": ["{{url}}{{version}}"],
+          "path": ["users"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [""]
+      }
+    }
+  ]
+}
