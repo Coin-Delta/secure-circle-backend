@@ -25,6 +25,10 @@ userRouter
     verifyJWT,
     upload.fields([
       {
+        name: "businessLogo",
+        maxCount: 1,
+      },
+      {
         name: "files[identification]",
         maxCount: 1,
       },

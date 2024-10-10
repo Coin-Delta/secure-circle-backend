@@ -74,6 +74,9 @@ class UserService {
             items.files.businessLicense
           );
         }
+        if (items.businessLogo) {
+          items.businessLogo = await getSignedUrlFromS3(items.businessLogo);
+        }
 
         return items;
       })
@@ -114,6 +117,9 @@ class UserService {
         user.files.businessLicense
       );
     }
+    if (user.businessLogo) {
+      user.businessLogo = await getSignedUrlFromS3(user.businessLogo);
+    }
 
     return user;
   }
@@ -136,6 +142,9 @@ class UserService {
         user.files.businessLicense
       );
     }
+    if (user.businessLogo) {
+      user.businessLogo = await getSignedUrlFromS3(user.businessLogo);
+    }
 
     return user;
   }
@@ -144,14 +153,14 @@ class UserService {
     let reqUser = req.user;
     const data = req.body;
 
-    if (data.files && data.files.identification) {
+    if (data?.files?.identification) {
       const identification = await getKeyFromSignedUrl(
         data.files.identification
       );
 
       data.files = { ...data.files, identification };
     }
-    if (data?.files && data.files.businessLicense) {
+    if (data?.files?.businessLicense) {
       const businessLicense = await getKeyFromSignedUrl(
         data.files.businessLicense
       );
@@ -159,10 +168,21 @@ class UserService {
       data.files = { ...data.files, businessLicense };
     }
 
+    if (data.businessName) {
+      data.isVerified = false;
+    }
+
+    if (typeof req.files["businessLogo"] === "object") {
+      const businessLogo = await uploadToS3(req.files["businessLogo"][0].path);
+      data.isVerified = false;
+      data.businessLogo = businessLogo;
+    }
+
     if (typeof req.files["files[identification]"] === "object") {
       const identification = await uploadToS3(
         req.files["files[identification]"][0].path
       );
+      data.isVerified = false;
       data.files = { ...data.files, identification };
     }
 
@@ -170,7 +190,7 @@ class UserService {
       const businessLicense = await uploadToS3(
         req.files["files[businessLicense]"][0].path
       );
-
+      data.isVerified = false;
       data.files = { ...data.files, businessLicense };
     }
 

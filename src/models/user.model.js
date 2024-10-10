@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    businessLogo: {
+      type: String,
+      default: null,
+    },
     walletAddress: {
       type: String,
       default: null,
