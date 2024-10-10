@@ -416,6 +416,11 @@
               "key": "walletAddress",
               "value": "0xe0E1D8e06aC676a5382a2Ef08593f9fDA2db1445",
               "type": "text"
+            },
+            {
+              "key": "businessLogo",
+              "type": "file",
+              "src": "/C:/Users/HP/Pictures/4.png"
             }
           ]
         },
