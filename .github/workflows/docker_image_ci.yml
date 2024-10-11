@@ -1,0 +1,82 @@
+name: Docker Image CI
+
+on:
+ push:
+  branches:
+  - main
+
+jobs:
+  build:
+    name: Building Docker Image for - coindelta
+    runs-on: ubuntu-latest
+    environment: coindelta
+    env:
+      image_name: secure-circle-${{ github.ref }}
+      AWS_Account_ID: $(aws sts get-caller-identity --query Account --output text)
+      region: us-east-1
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.region }}
+
+    - name: Cretae ECR Repo
+      run: |
+        ECR_REPO_LIST=$(aws ecr describe-repositories --region ${{ env.region }} | jq -r '.repositories[].repositoryName')
+        REPO_NAME='${{ env.image_name }}'
+        AWS_Account_ID=
+
+        if [ "$ECR_REPO_LIST" = '[]' ] || [ "$ECR_REPO_LIST" != "$REPO_NAME" ]
+        then
+            if aws ecr create-repository --repository-name "$REPO_NAME" --image-tag-mutability MUTABLE --region ${{ env.region }} 2>&1 | grep -q "RepositoryAlreadyExistsException"
+            then
+                echo "Repository Already Exists"
+            else
+               json_content='{
+                   "rules": [
+                       {
+                           "rulePriority": 1,
+                           "description": "Expire images after the 3rd image",
+                           "selection": {
+                               "tagStatus": "untagged",
+                               "countType": "imageCountMoreThan",
+                               "countNumber": 3
+                           },
+                           "action": {
+                               "type": "expire"
+                           }
+                       }
+                   ]
+                }'
+
+               # Store JSON content in a file named policy.json
+               echo "$json_content" > policy.json
+
+               aws ecr put-lifecycle-policy \
+                --repository-name "$REPO_NAME" \
+                --lifecycle-policy-text "file://policy.json"
+               echo "Repository Created"
+            fi
+        fi
+
+    - name: Docker login
+      run: aws ecr get-login-password --region ${{ env.region }} | docker login --username AWS --password-stdin ${{ env.AWS_Account_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com
+
+    - name: Build the Docker image
+      run: docker build --tag ${{ env.image_name }} .
+
+    - name: Add tag to Docker image
+      run: docker tag ${{ env.image_name }}:latest ${{ env.AWS_Account_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com/${{ env.image_name }}:latest
+
+    # - name: Docker login
+    #   run: docker login -u ${{ secrets.DOCKER_HUB_LOGIN_USERNAME }} -p ${{ secrets.DOCKER_HUB_LOGIN_PASSWORD }}
+
+    - name: Docker push
+      run: docker push ${{ env.AWS_Account_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com/${{ env.image_name }}:latest
+
+    - name: Docker logout
+      run: docker logout
