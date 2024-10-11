@@ -37,7 +37,10 @@ class AuthService {
   async login(userData) {
     try {
       const user = await this.cognitoRepository.getUserByEmail(userData.email);
-      if (!user) {
+      const userinDb = await this.userRepository.findOne({
+        email: userData.email,
+      });
+      if (!user || !userinDb) {
         throw new ApiError(
           StatusCodes.UNPROCESSABLE_ENTITY,
           messages.AUTH.EMAIL_NOT_EXIST
