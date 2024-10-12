@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
+    "prod": "node --env-file=.env ./src/index.js",
     "sonar-scan": "sonar-scanner",
     "pre-commit": "npm run compare-env && lint-staged --allow-empty",
     "prettier:check": "prettier --check --config .prettierrc \"**/*.js\"",

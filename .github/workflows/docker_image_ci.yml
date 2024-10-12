@@ -1,18 +1,9 @@
 name: Docker Image CI
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        type: choice
-        description: Choose The Project Organization
-        default: 'Choose Organization'
-        options:
-        - Choose Organization
-        - coindelta
-#  push:
-#   branches:
-#   - main
+ push:
+  branches:
+  - main
 
 jobs:
   build:
